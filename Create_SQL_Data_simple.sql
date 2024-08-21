@@ -106,7 +106,37 @@ insert into orders values
   (47,'2023-12-19',4,6,1),
   (48,'2023-12-19',2,1,1),
   (49,'2023-12-19',0,1,1),
-  (50,'2023-12-19',0,4,1);
+  (50,'2023-12-19',0,4,1),
+  (51,'2023-12-20',2,1,1),
+  (52,'2023-12-20',0,4,1),
+  (53,'2023-12-20',0,4,1),
+  (54,'2023-12-20',0,4,1),
+  (55,'2023-12-20',0,4,1),
+  (56,'2023-12-20',0,4,1),
+  (57,'2023-12-20',0,10,1),
+  (58,'2023-12-20',0,12,1),
+  (59,'2023-12-20',0,8,1),
+  (60,'2023-12-20',0,4,1),
+  (61,'2023-12-20',0,6,1),
+  (62,'2023-12-20',0,4,1),
+  (63,'2023-12-20',0,2,1),
+  (64,'2023-12-20',0,11,1),
+  (65,'2023-12-20',0,4,1),
+  (66,'2023-12-20',0,8,1),
+  (67,'2023-12-20',0,12,1),
+  (68,'2023-12-20',0,4,3),
+  (69,'2023-12-20',2,1,1),
+  (70,'2023-12-20',4,4,1),
+  (71,'2023-12-20',0,4,1),
+  (72,'2023-12-21',0,4,1),
+  (73,'2023-12-21',3,2,1),
+  (74,'2023-12-21',4,6,1),
+  (75,'2023-12-21',0,8,1),
+  (76,'2023-12-21',0,10,1),
+  (77,'2023-12-21',1,5,1),
+  (78,'2023-12-21',0,4,3),
+  (79,'2023-12-21',0,12,1),
+  (80,'2023-12-21',0,4,2);
   
 
 .mode box
@@ -126,7 +156,30 @@ from orders
 join customers on orders.customers_id = customers.customers_id
 join menus on orders.product_id = menus.product_id;
 
---Serch for customers who live in Bangkok and buy coffee
+--total revenue
+.mode box
+select sum(quantity*product_price) as total_price
+from orders
+join menus on menus.product_id = orders.product_id;
+
+--total cup
+.mode box
+select product_name, product_type,count()
+from orders
+join menus on menus.product_id = orders.product_id
+where product_type = 'Hot'
+group by 1
+order by 3 desc;
+
+.mode box
+select product_name, product_type,count()
+from orders
+join menus on menus.product_id = orders.product_id
+where product_type = 'Cold'
+group by 1
+order by 3 desc ;
+
+--Find customers who are not members.
 .mode box
 select first_name,orders_date,product_name,count(*) 
 from (select * from customers
@@ -137,7 +190,7 @@ group by 1,2,3;
 
 --find customers that buy coffee on 2023-10
 .mode box
-select orders_date,first_name,product_name,quantity
+select orders_date,first_name,product_name,product_type,quantity
 from (select * from orders
   where strftime('%Y-%m',orders_date) = '2023-12') as orders_2023_10
 join customers on orders_2023_10.customers_id = customers.customers_id
