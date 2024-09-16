@@ -136,7 +136,27 @@ insert into orders values
   (77,'2023-12-21',1,5,1),
   (78,'2023-12-21',0,4,3),
   (79,'2023-12-21',0,12,1),
-  (80,'2023-12-21',0,4,2);
+  (80,'2023-12-21',0,4,2)
+  (81,'2024-01-05',0,4,1),
+  (82,'2024-01-05',2,1,1),
+  (83,'2024-01-05',0,4,1),
+  (84,'2024-01-05',0,4,1),
+  (85,'2024-01-05',0,4,1),
+  (86,'2024-01-06',0,4,1),
+  (87,'2024-01-06',0,4,1),
+  (88,'2024-01-06',0,10,1),
+  (89,'2024-01-06',0,12,1),
+  (90,'2024-01-06',0,8,1),
+  (91,'2024-01-07',0,4,1),
+  (92,'2024-01-07',0,6,1),
+  (93,'2024-01-07',0,4,1),
+  (94,'2024-01-07',0,2,1),
+  (95,'2024-01-08',0,11,1),
+  (96,'2024-01-08',0,4,1),
+  (97,'2024-01-08',0,8,1),
+  (98,'2024-01-08',0,12,1),
+  (99,'2024-01-08',0,4,3),
+  (100,'2024-01-08',2,1,1);
   
 
 .mode box
@@ -183,15 +203,15 @@ order by 3 desc ;
 .mode box
 select first_name,orders_date,product_name,count(*) 
 from (select * from customers
-  where city = '-') as customers_Bkk
-join orders on customers_Bkk.customers_id = orders.customers_id
+  where city = '-') as customers_notmem
+join orders on customers_notmem.customers_id = orders.customers_id
 join menus on orders.product_id = menus.product_id
 group by 1,2,3;
 
---find customers that buy coffee on 2023-10
+--find customers that buy coffee on 2023-12
 .mode box
 select orders_date,first_name,product_name,product_type,quantity
 from (select * from orders
-  where strftime('%Y-%m',orders_date) = '2023-12') as orders_2023_10
-join customers on orders_2023_10.customers_id = customers.customers_id
-join menus on orders_2023_10.product_id = menus.product_id;
+  where strftime('%Y-%m',orders_date) = '2023-12') as orders_2023_12
+join customers on orders_2023_12.customers_id = customers.customers_id
+join menus on orders_2023_12.product_id = menus.product_id;
